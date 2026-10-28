@@ -13,10 +13,17 @@
 
 ## 下载
 
-| 方式 | 地址 |
+| 项目 | 地址 |
 | --- | --- |
-| 一键包（推荐） | [Releases · Charles-5.2.2-CN-v1.0.zip](https://github.com/lieovoa-hue/charles-cn/releases/latest) |
+| **官方安装包（必需，版本须为 5.2.2）** | [Charles 下载页](https://www.charlesproxy.com/download/) · [Windows x64 MSI 直链](https://www.charlesproxy.com/assets/release/5.2.2/charles-proxy-5.2.2-win-x86_64.msi) · [Windows x64 APPX 直链](https://www.charlesproxy.com/assets/release/5.2.2/charles-proxy-5.2.2-win-x86_64.appx) |
+| 历史版本 | <https://www.charlesproxy.com/download/previous-release/> |
+| 本语言包（一键包） | [Releases · Charles-5.2.2-CN-v1.0.zip](https://github.com/lieovoa-hue/charles-cn/releases/latest) |
 | 只要 jar | 仓库内 `dist/charles-zh.jar` |
+
+> 语言包不含官方程序，需要先安装官方 Charles **5.2.2** 再覆盖 `lib\charles.jar`。
+> 推荐用 **MSI** 包安装（安装目录可控、无包签名校验）；APPX/MSIX 安装在
+> `C:\Program Files\WindowsApps\…`，受系统保护且带签名校验，不适合直接替换文件。
+> 其它版本（5.2.1、5.3.x…）的 jar 结构可能不同，语言包未做适配。
 
 压缩包内已含 `dist/charles-zh.jar`、`scripts/安装汉化.bat`、`scripts/还原原版.bat`、`tools/汉化词库.tsv` 与本文档。
 
