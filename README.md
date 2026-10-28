@@ -11,6 +11,15 @@
 
 ---
 
+## 下载
+
+| 方式 | 地址 |
+| --- | --- |
+| 一键包（推荐） | [Releases · Charles-5.2.2-CN-v1.0.zip](https://github.com/lieovoa-hue/charles-cn/releases/latest) |
+| 只要 jar | 仓库内 `dist/charles-zh.jar` |
+
+压缩包内已含 `dist/charles-zh.jar`、`scripts/安装汉化.bat`、`scripts/还原原版.bat`、`tools/汉化词库.tsv` 与本文档。
+
 ## 目录结构
 
 ```
