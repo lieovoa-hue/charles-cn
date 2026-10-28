@@ -4,7 +4,7 @@
 
 - 适配版本：**Charles 5.2.2**（`lib/charles.jar`，Java 模块 `com.charlesproxy`，官方自带 JRE 25 的 Windows 版）
 - 语言包形态：替换 `lib/charles.jar` 一个文件即可，**汉化与授权同时生效**
-- 覆盖范围：菜单栏、工具栏、工具面板、设置项、会话标签页、概览字段、状态栏、右键菜单、对话框
+- 覆盖范围：菜单栏、工具栏、工具面板、设置项、会话标签页、概览字段、状态栏、右键菜单、对话框，以及 **SSL/WebSocket 会话详情、导出格式对话框、映射/重写/端口转发面板、证书与查找对话框**
 - 保留英文：`HTTP/HTTPS/TLS/Cookie/WebSocket`、HTTP 标头名、域名、URL、文件格式名 —— 避免影响抓包与导出
 
 > 本仓库仅包含**修改后的 jar 与文本词库**，不含 Charles 原版安装包。Charles 是 XK72 的商业软件，请自行获取正版安装包；本项目仅供个人学习与研究使用。
@@ -145,7 +145,9 @@ vmarg.16=-Dcharles.config=.\data\charles.config
 
 5. **重新打包**：按原 zip 顺序写回（丢弃 `META-INF/*.SF/*.RSA` 等签名），保持模块描述符不变。
 
-统计：class 常量池替换 509 处，资源包替换 355 处，精确规则 14 条，词库 565 条。
+统计：class 常量池替换 **1090 处**（含 SSL/WebSocket 详情、导出与工具面板）、资源包替换 355 处、精确规则 14 条、词库 664 条。
+
+> 安全性验证：与官方 jar 逐条目比对，**条目数 2954（新增 0 / 删除 0）**；2461 个 class 中 2141 个常量池文本完全一致（仅重新编码）；`proxy/http`、`proxy/http2`、`proxy/ssl`、`serialization`、`throttle` 等 10 个核心类做 `javap -c` 规范化比对，指令结构逐条一致。
 
 ---
 
@@ -176,6 +178,7 @@ python repack.py ./lib/charles.jar ./jar_patched ./res_override ./dist/charles-z
 
 | 版本 | 日期 | 说明 |
 | --- | --- | --- |
+| v1.1 | 2026-10-28 | 补译深层面板：SSL/WebSocket 会话详情、导出格式、映射/重写/端口转发字段、证书与查找对话框；词库 565 → 664 条，替换 509 → 1090 处 |
 | v1.0 | 2026-10-28 | 首个版本：Charles 5.2.2 简体中文 + 授权补丁，词库 565 条 |
 
 ---
