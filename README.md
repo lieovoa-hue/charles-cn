@@ -145,7 +145,9 @@ vmarg.16=-Dcharles.config=.\data\charles.config
 
 5. **重新打包**：按原 zip 顺序写回（丢弃 `META-INF/*.SF/*.RSA` 等签名），保持模块描述符不变。
 
-统计：class 常量池替换 **1090 处**（含 SSL/WebSocket 详情、导出与工具面板）、资源包替换 355 处、精确规则 14 条、词库 664 条。
+统计：class 常量池替换 **1046 处**（含 SSL/WebSocket 详情、导出与工具面板）、资源包替换 355 处、精确规则 14 条、词库 652 条。
+
+> 图标保护：jar 内 95 个图标按「名称」加载（Structure.png、Sequence.png、Clear.png…），把同名文案译成中文会导致图标查不到、按钮变空白。构建时自动跳过与图标同名的字符串，词库中也已剔除这类条目。
 
 > 安全性验证：与官方 jar 逐条目比对，**条目数 2954（新增 0 / 删除 0）**；2461 个 class 中 2141 个常量池文本完全一致（仅重新编码）；`proxy/http`、`proxy/http2`、`proxy/ssl`、`serialization`、`throttle` 等 10 个核心类做 `javap -c` 规范化比对，指令结构逐条一致。
 
@@ -178,6 +180,7 @@ python repack.py ./lib/charles.jar ./jar_patched ./res_override ./dist/charles-z
 
 | 版本 | 日期 | 说明 |
 | --- | --- | --- |
+| v1.2 | 2026-10-28 | 修复工具栏图标缺失（Structure/Sequence 视图切换等按钮图标不显示）；构建增加图标名保护，词库剔除 7 条与图标同名的条目 |
 | v1.1 | 2026-10-28 | 补译深层面板：SSL/WebSocket 会话详情、导出格式、映射/重写/端口转发字段、证书与查找对话框；词库 565 → 664 条，替换 509 → 1090 处 |
 | v1.0 | 2026-10-28 | 首个版本：Charles 5.2.2 简体中文 + 授权补丁，词库 565 条 |
 

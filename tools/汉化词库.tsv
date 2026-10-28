@@ -45,7 +45,6 @@ Block the sending and receiving of cookies.	阻止 Cookie 的发送与接收。
 Blocking action:	阻止动作：
 Body	正文
 Boolean	布尔值
-Breakpoints	断点
 Breakpoints Settings…	断点设置…
 Breakpoints settings	断点设置
 Breakpoints settings…	断点设置…
@@ -82,7 +81,6 @@ Check for updates	检查更新
 Choose	选择
 Choose…	选择…
 Cipher Suite	密码套件
-Clear	清除
 Clear Others	清除其他
 Clear Session	清除会话
 Clear entire message	清空整个消息
@@ -116,7 +114,6 @@ Comma Separated File	逗号分隔文件
 Comment	注释
 Comment:	注释：
 Complete	完成
-Compose	新建请求
 Compose a new request	新建请求
 Compose a new request based on the selection	基于所选内容新建请求
 Compose new…	新建请求…
@@ -451,7 +448,6 @@ Remove Charles license	移除 Charles 许可证
 Remove Charles license…	移除 Charles 许可证…
 Remove Header	删除标头
 Remove Query Param	删除查询参数
-Repeat	重发
 Repeat & validate	重发并验证
 Repeat advanced…	高级重发…
 Repeat selected requests	重发所选请求
@@ -535,7 +531,6 @@ Select all	全选
 Selected	所选内容
 Select…	选择…
 Sending request	正在发送请求
-Sequence	序列
 Server	服务器
 Server Address	服务器地址
 Server Chosen	服务器选择
@@ -581,7 +576,6 @@ Stop logging to file	停止写入日志文件
 Stop recording	停止记录
 Stop throttling	停止限速
 String	字符串
-Structure	结构
 Success	成功
 Summary	摘要
 Support HTTP/2	支持 HTTP/2
@@ -628,7 +622,6 @@ User interface	用户界面
 Username:	用户名：
 Using automatically generated root certificate	正在使用自动生成的根证书
 Using glob syntax: * matches any string, ? matches any character, escape using \	使用通配语法：* 匹配任意字符串，? 匹配任一字符，\ 用于转义
-Validate	验证
 Validate selected responses	验证所选响应
 Validation	校验
 Value	值
