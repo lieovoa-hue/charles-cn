@@ -69,18 +69,22 @@ function Get-CharlesCandidates([switch]$SkipScan, [scriptblock]$OnProgress) {
             'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
             'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*',
             'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*')) {
-        Get-ItemProperty $root -ErrorAction SilentlyContinue |
-            Where-Object { $_.DisplayName -like '*Charles*' } |
-            ForEach-Object {
-                if ($_.InstallLocation) { Add-Candidate $list $_.InstallLocation '注册表 InstallLocation' }
-                if ($_.DisplayIcon) {
-                    $p = ($_.DisplayIcon -replace ',\d+$', '')
-                    if ($p -like '*.exe') { Add-Candidate $list (Split-Path $p) '注册表 DisplayIcon' }
+        try {
+            Get-ItemProperty $root -ErrorAction SilentlyContinue |
+                Where-Object { $_.DisplayName -like '*Charles*' } |
+                ForEach-Object {
+                    try {
+                        if ($_.InstallLocation) { Add-Candidate $list $_.InstallLocation '注册表 InstallLocation' }
+                        if ($_.DisplayIcon) {
+                            $p = ($_.DisplayIcon -replace ',\d+$', '')
+                            if ($p -like '*.exe') { Add-Candidate $list (Split-Path $p) '注册表 DisplayIcon' }
+                        }
+                        if ($_.UninstallString -match '^"?([^"]+\.exe)"?') {
+                            Add-Candidate $list (Split-Path $Matches[1]) '注册表 UninstallString'
+                        }
+                    } catch { }
                 }
-                if ($_.UninstallString -match '^"?([^"]+\.exe)"?') {
-                    Add-Candidate $list (Split-Path $Matches[1]) '注册表 UninstallString'
-                }
-            }
+        } catch { }
     }
     if ($OnProgress) { & $OnProgress '已检查注册表' }
 
@@ -92,30 +96,38 @@ function Get-CharlesCandidates([switch]$SkipScan, [scriptblock]$OnProgress) {
             "$env:LOCALAPPDATA\Programs\Charles-CN",
             "$env:LOCALAPPDATA\Charles",
             "$env:APPDATA\Charles")) {
-        if (Test-Path $r) { Add-Candidate $list $r '常见安装路径' }
+        try { if ($r -and (Test-Path $r)) { Add-Candidate $list $r '常见安装路径' } } catch { }
     }
     if ($OnProgress) { & $OnProgress '已检查常见路径' }
 
     # 3) 各磁盘根目录
-    foreach ($d in (Get-PSDrive -PSProvider FileSystem -ErrorAction SilentlyContinue)) {
-        foreach ($name in @('Charles', 'Charles-CN', 'CharlesProxy')) {
-            $p = Join-Path $d.Root $name
-            if (Test-Path $p) { Add-Candidate $list $p '磁盘根目录' }
+    try {
+        foreach ($d in (Get-PSDrive -PSProvider FileSystem -ErrorAction SilentlyContinue)) {
+            foreach ($name in @('Charles', 'Charles-CN', 'CharlesProxy')) {
+                try {
+                    $p = Join-Path $d.Root $name
+                    if (Test-Path $p) { Add-Candidate $list $p '磁盘根目录' }
+                } catch { }
+            }
         }
-    }
+    } catch { }
     if ($OnProgress) { & $OnProgress '已检查磁盘根目录' }
 
     # 4) 运行中的进程
-    Get-Process -Name 'Charles' -ErrorAction SilentlyContinue | ForEach-Object {
-        if ($_.Path) { Add-Candidate $list (Split-Path $_.Path) '运行中的进程' }
-    }
+    try {
+        Get-Process -Name 'Charles' -ErrorAction SilentlyContinue | ForEach-Object {
+            try { if ($_.Path) { Add-Candidate $list (Split-Path $_.Path) '运行中的进程' } } catch { }
+        }
+    } catch { }
 
     # 5) MSIX / 商店版
-    $appx = Get-AppxPackage -Name 'XK72.Charles' -ErrorAction SilentlyContinue
-    if ($appx) {
-        $p = Join-Path $appx.InstallLocation 'VFS\ProgramFilesX64\Charles'
-        if (Test-Path $p) { Add-Candidate $list $p 'Microsoft Store (MSIX)' }
-    }
+    try {
+        $appx = Get-AppxPackage -Name 'XK72.Charles' -ErrorAction SilentlyContinue
+        if ($appx) {
+            $p = Join-Path $appx.InstallLocation 'VFS\ProgramFilesX64\Charles'
+            if (Test-Path $p) { Add-Candidate $list $p 'Microsoft Store (MSIX)' }
+        }
+    } catch { }
     if ($OnProgress) { & $OnProgress '已检查商店版' }
 
     # 6) 浅层扫描兜底
@@ -125,8 +137,10 @@ function Get-CharlesCandidates([switch]$SkipScan, [scriptblock]$OnProgress) {
                 Where-Object { $_ -and (Test-Path $_) }) {
             if ((Get-Date) -gt $deadline) { break }
             if ($OnProgress) { & $OnProgress "扫描 $root …" }
-            Get-ChildItem -Path $root -Directory -Filter 'Charles*' -Recurse -Depth 2 -ErrorAction SilentlyContinue |
-                ForEach-Object { Add-Candidate $list $_.FullName '目录扫描' }
+            try {
+                Get-ChildItem -Path $root -Directory -Filter 'Charles*' -Recurse -Depth 2 -ErrorAction SilentlyContinue |
+                    ForEach-Object { try { Add-Candidate $list $_.FullName '目录扫描' } catch { } }
+            } catch { }
         }
     }
     return $list

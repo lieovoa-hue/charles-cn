@@ -43,6 +43,17 @@ charles-cn/
 
 ---
 
+## 单文件版（推荐）
+
+dist\Charles-CN-Setup.exe 是**一个文件搞定全部**：双击即用，内含安装 / 卸载 / 还原全部工具与汉化包。
+
+| 用法 | 说明 |
+| --- | --- |
+| 双击 Charles-CN-Setup.exe | 打开安装界面（自动扫描 → 选择 → 安装） |
+| Charles-CN-Setup.exe uninstall | 直接打开卸载界面 |
+
+运行时会自动解压到 %LOCALAPPDATA%\Charles-CN-Tools\v1.6（用户目录不可写时回退到 ProgramData、再回退到程序所在目录），之后再次双击直接复用，不会重复解压。
+
 ## 安装器（图形界面 / 自动）
 
 **双击 scripts\安装汉化.bat 打开图形界面：**
@@ -239,6 +250,7 @@ python repack.py ./lib/charles.jar ./jar_patched ./res_override ./dist/charles-z
 
 | 版本 | 日期 | 说明 |
 | --- | --- | --- |
+| v1.6 | 2026-11-03 | 新增单文件版 Charles-CN-Setup.exe（6 MB，内含全部工具与汉化包，双击即用）；扫描各来源独立容错，单个来源失败不再中断整体扫描 |
 | v1.5 | 2026-11-03 | 新增卸载/清理工具：三种模式（还原/彻底卸载/卸载商店版）+ 代理/快捷方式/根证书/数据清理，支持 -Target 与 -DryRun；安装界面底部增加「卸载 / 清理…」入口 |
 | v1.4 | 2026-11-03 | 新增图形界面安装器（列表选择/进度条/实时日志/还原/打开日志）；按路径优先级自动选中；安装后启动前自动解除 MOTW，避免 Windows 安全警告 |
 | v1.3 | 2026-11-03 | 安装器全自动化：自动查找安装目录、自动结束运行中的 Charles、自动备份/校验、商店版可自动转便携版；新增 -DryRun/-Target/-Portable 参数与 install.log |
