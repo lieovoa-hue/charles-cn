@@ -122,8 +122,8 @@ $form.Controls.Add($btnOpenLog)
 $lblFoot = New-Object System.Windows.Forms.Label
 $lblFoot.Text = '适配 Charles 5.2.2 · 写入系统目录需要管理员权限'
 $lblFoot.ForeColor = [System.Drawing.Color]::Gray
-$lblFoot.Location = New-Object System.Drawing.Point(236, 584)
-$lblFoot.Size = New-Object System.Drawing.Size(530, 20)
+$lblFoot.Location = New-Object System.Drawing.Point(350, 584)
+$lblFoot.Size = New-Object System.Drawing.Size(416, 20)
 $form.Controls.Add($lblFoot)
 
 # ---------------- 日志 / 进度挂接 ----------------
@@ -330,6 +330,21 @@ $btnRestore.Add_Click({
         Invoke-Scan
     } else {
         [System.Windows.Forms.MessageBox]::Show('还原失败，详见日志。', '失败', 'OK', 'Error') | Out-Null
+    }
+})
+
+$btnUninstall = New-Object System.Windows.Forms.Button
+$btnUninstall.Text = '卸载 / 清理…'
+$btnUninstall.Location = New-Object System.Drawing.Point(228, 578)
+$btnUninstall.Size = New-Object System.Drawing.Size(110, 30)
+$form.Controls.Add($btnUninstall)
+
+$btnUninstall.Add_Click({
+    $u = Join-Path $PSScriptRoot '卸载-Charles.ps1'
+    if (Test-Path $u) {
+        Start-Process powershell.exe -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$u`"") | Out-Null
+    } else {
+        [System.Windows.Forms.MessageBox]::Show('找不到 卸载-Charles.ps1', '缺少文件', 'OK', 'Error') | Out-Null
     }
 })
 

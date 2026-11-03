@@ -54,6 +54,19 @@ charles-cn/
 
 命令行版：scripts\命令行安装.bat，或 powershell -File 安装汉化.ps1 -DryRun。
 
+### 卸载 / 清理
+
+双击 scripts\卸载.bat（或安装界面底部「卸载 / 清理…」）：
+
+| 模式 | 作用 |
+| --- | --- |
+| 仅还原汉化 | 用 charles.jar.orig 还原，保留 Charles 程序 |
+| 彻底卸载 | 结束进程 → 清理代理/快捷方式/证书/数据 → 删除整个目录 |
+| 卸载商店版 | Remove-AppxPackage 移除 Microsoft Store 版 |
+
+清理项可勾选：系统代理（指向 8888 时）、桌面/开始菜单快捷方式、Charles 根证书、配置数据目录。
+执行前有二次确认；命令行支持 -Target 路径 与 -DryRun（仅预览）。
+
 ### 安装器做了什么
 
 
@@ -226,6 +239,7 @@ python repack.py ./lib/charles.jar ./jar_patched ./res_override ./dist/charles-z
 
 | 版本 | 日期 | 说明 |
 | --- | --- | --- |
+| v1.5 | 2026-11-03 | 新增卸载/清理工具：三种模式（还原/彻底卸载/卸载商店版）+ 代理/快捷方式/根证书/数据清理，支持 -Target 与 -DryRun；安装界面底部增加「卸载 / 清理…」入口 |
 | v1.4 | 2026-11-03 | 新增图形界面安装器（列表选择/进度条/实时日志/还原/打开日志）；按路径优先级自动选中；安装后启动前自动解除 MOTW，避免 Windows 安全警告 |
 | v1.3 | 2026-11-03 | 安装器全自动化：自动查找安装目录、自动结束运行中的 Charles、自动备份/校验、商店版可自动转便携版；新增 -DryRun/-Target/-Portable 参数与 install.log |
 | v1.2 | 2026-10-28 | 修复工具栏图标缺失（Structure/Sequence 视图切换等按钮图标不显示）；构建增加图标名保护，词库剔除 7 条与图标同名的条目 |

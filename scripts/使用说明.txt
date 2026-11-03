@@ -55,6 +55,23 @@ Charles 5.2.2 简体中文语言包 · 自动安装器
   · 帮助菜单显示「注册给 Charles CN」
   · 启动时不再出现“30 day trial”提示
 
+【卸载 / 清理】
+  双击「卸载.bat」（或安装界面底部「卸载 / 清理…」按钮）：
+    · 列表列出所有 Charles（便携版 / 商店版），标注大小与是否有原版备份
+    · 三种操作：
+        1) 仅还原汉化 —— 保留 Charles 程序，回到官方原版（用 charles.jar.orig）
+        2) 彻底卸载 —— 删除该 Charles 目录（连同程序、汉化、备份）
+        3) 卸载商店版 —— 从系统移除 Microsoft Store 版
+    · 彻底卸载时可同时清理：
+        - 系统代理（若指向 127.0.0.1:8888 会关闭）
+        - 桌面/开始菜单快捷方式
+        - Charles 根证书（受信任根）
+        - 配置与证书数据目录（data\、%APPDATA%\Charles …）
+    · 执行前有二次确认；删除不可恢复
+
+  命令行：powershell -File 卸载-Charles.ps1 -Target D:\Charles-CN
+         加 -DryRun 只预览不删除
+
 【还原原版】
   双击「还原原版.bat」→ 自动找到带 charles.jar.orig 备份的目录 → 恢复并校验。
   备份策略：首次安装生成 charles.jar.orig；再次安装会额外保留
