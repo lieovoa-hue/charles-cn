@@ -1,0 +1,67 @@
+Charles 5.2.2 简体中文语言包 · 自动安装器
+=================================================
+
+【一键安装】
+  1) 双击「安装汉化.bat」
+  2) 弹出 UAC 提权窗口 → 点「是」
+  3) 安装器自动完成：扫描 Charles 安装目录 → 结束正在运行的 Charles
+     → 备份原版 jar → 写入汉化 jar → 校验 SHA256 → 启动 Charles
+  4) 看到「文件 编辑 视图 代理 工具 窗口 帮助」即为成功
+
+【会自动查找哪些位置】
+  · 卸载注册表（HKLM / HKCU / WOW6432Node）里的 Charles 安装信息
+  · 常见路径：Program Files\Charles、Programs\Charles、AppData\Charles …
+  · 各磁盘根目录下的 Charles / Charles-CN 目录
+  · 正在运行的 Charles 进程所在目录
+  · Microsoft Store(MSIX) 包目录
+  · 以上都没有时，做一次 15 秒的浅层目录扫描（深度 3）
+
+  找到多个时：只有一个「可写」的直接用；多个可写会列出来让你选。
+
+【找不到目录怎么办】
+  安装器会提示，并给出两种解决方式：
+    a) 先安装官方 Charles 5.2.2：https://www.charlesproxy.com/download/
+    b) 手动指定目录：
+       powershell -ExecutionPolicy Bypass -File 安装汉化.ps1 -Target "D:\你的\Charles目录"
+
+【Charles 正在运行 / 有残留进程】
+  安装器会自动先正常关闭窗口（最多等 5 秒），无响应才强制结束进程，
+  然后继续安装。不需要你手动去任务管理器杀进程。
+
+  如果强制结束后仍提示被占用，通常是：
+    · 有其它程序（杀毒、备份软件）正在扫描该 jar → 稍等再试
+    · 文件被杀软锁定 → 把 Charles 目录加入白名单
+    · 权限不足 → 用管理员身份运行「安装汉化.bat」
+
+【只装了 Microsoft Store(商店)版】
+  商店版位于 C:\Program Files\WindowsApps\…，目录只读且带签名校验，
+  不能直接替换。安装器检测到这种情况会让你确认，然后自动：
+    · 把商店版复制到 %LOCALAPPDATA%\Programs\Charles-CN
+    · 配置便携数据目录（.\data）
+    · 打上汉化补丁并启动
+  以后就用这个便携版，商店版保持不变。
+
+【验证是否成功】
+  · 菜单栏是中文
+  · 帮助菜单显示「注册给 Charles CN」
+  · 启动时不再出现“30 day trial”提示
+
+【还原原版】
+  双击「还原原版.bat」→ 自动找到带 charles.jar.orig 备份的目录 → 恢复并校验。
+  备份策略：首次安装生成 charles.jar.orig；再次安装会额外保留
+  charles.jar.bak-年月日-时分秒，不会覆盖最初的原始备份。
+
+【命令行参数】
+  -DryRun            只扫描并显示会安装到哪里，不做任何修改
+  -Target "路径"      指定 Charles 目录，跳过自动查找
+  -Portable          只找到商店版时，直接创建便携副本（不再询问）
+  -NoLaunch          安装后不自动启动 Charles
+  -NoElevate         不提权（一般用于已提权的部署脚本）
+
+【日志】
+  安装日志：install.log
+  还原日志：restore.log
+
+【系统要求】
+  Windows 10 / 11 x64，Windows PowerShell 5.1（系统自带）
+  适配 Charles 5.2.2；其它版本未做适配。

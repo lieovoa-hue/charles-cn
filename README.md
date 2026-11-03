@@ -43,6 +43,26 @@ charles-cn/
 
 ---
 
+## 安装器（自动）
+
+scripts\安装汉化.bat 双击即可，会自动：
+
+1. 扫描本机 Charles 安装位置（注册表 / 常见路径 / 各磁盘 / 运行进程 / MSIX 包 / 15 秒浅层扫描）
+2. 自动结束正在运行的 Charles（先正常关闭，无响应再强制结束）
+3. 备份原版 lib\charles.jar → charles.jar.orig（再次安装会额外生成 .bak-时间戳）
+4. 写入汉化 jar 并校验 SHA256
+5. 启动 Charles
+
+| 参数 | 作用 |
+| --- | --- |
+| -DryRun | 只扫描并显示将安装到哪里 |
+| -Target 路径 | 指定目录，跳过自动查找 |
+| -Portable | 只找到商店(MSIX)版时自动创建便携副本 |
+| -NoLaunch | 安装后不自动启动 |
+
+> 只装了 Microsoft Store 版时，安装器会提示目录受保护，并自动把程序复制到
+> %LOCALAPPDATA%\Programs\Charles-CN 做成便携版再打补丁，商店版保持原样。
+
 ## 抓包前必读：系统代理
 
 Charles 只有在**系统代理指向它**时才会记录浏览器流量。两种做法：
@@ -194,6 +214,7 @@ python repack.py ./lib/charles.jar ./jar_patched ./res_override ./dist/charles-z
 
 | 版本 | 日期 | 说明 |
 | --- | --- | --- |
+| v1.3 | 2026-11-03 | 安装器全自动化：自动查找安装目录、自动结束运行中的 Charles、自动备份/校验、商店版可自动转便携版；新增 -DryRun/-Target/-Portable 参数与 install.log |
 | v1.2 | 2026-10-28 | 修复工具栏图标缺失（Structure/Sequence 视图切换等按钮图标不显示）；构建增加图标名保护，词库剔除 7 条与图标同名的条目 |
 | v1.1 | 2026-10-28 | 补译深层面板：SSL/WebSocket 会话详情、导出格式、映射/重写/端口转发字段、证书与查找对话框；词库 565 → 664 条，替换 509 → 1090 处 |
 | v1.0 | 2026-10-28 | 首个版本：Charles 5.2.2 简体中文 + 授权补丁，词库 565 条 |
