@@ -316,7 +316,9 @@ if ($Target) {
     if (Install-Patch (Resolve-Path $Target).Path $jarPath) {
         Log '全部完成' 'OK'
         if (-not $NoLaunch) {
-            Start-Process (Join-Path $Target 'Charles.exe')
+            $exe = Join-Path $Target 'Charles.exe'
+            try { Unblock-File -Path $exe -ErrorAction SilentlyContinue } catch { }
+            Start-Process $exe
             Log '已启动 Charles，请确认界面为中文' 'OK'
         }
     }
@@ -390,7 +392,9 @@ if (Install-Patch $chosen.Path $jarPath) {
     Write-Host '  提示：双击 Charles 时若需要抓包，请确认系统代理指向 127.0.0.1:8888' -ForegroundColor DarkGray
     Write-Host '        或使用随附的「启动 Charles 汉化版.bat」（自动设置/恢复系统代理）' -ForegroundColor DarkGray
     if (-not $NoLaunch) {
-        Start-Process (Join-Path $chosen.Path 'Charles.exe')
+        $exe = Join-Path $chosen.Path 'Charles.exe'
+        try { Unblock-File -Path $exe -ErrorAction SilentlyContinue } catch { }
+        Start-Process $exe
         Log '已启动 Charles' 'OK'
     }
 } else {
