@@ -225,7 +225,32 @@ function Install-Patch([string]$dir, [string]$jarPath) {
     }
     Report 100 '安装完成'
     Log "安装完成，SHA256 = $($gotHash.Substring(0,16))…" 'OK'
+    Install-Launcher $dir
     return $true
+}
+
+function Install-Launcher([string]$dir) {
+    $src = Join-Path $PSScriptRoot 'Charles-CN.exe'
+    if (-not (Test-Path $src)) {
+        Log '安装包内未包含启动器，跳过快捷方式（图标可能为默认样式）' 'WARN'
+        return
+    }
+    try {
+        $dst = Join-Path $dir 'Charles-CN.exe'
+        Copy-Item $src $dst -Force
+        $desk = [Environment]::GetFolderPath('Desktop')
+        $lnk = Join-Path $desk 'Charles 中文版.lnk'
+        $W = New-Object -ComObject WScript.Shell
+        $sc = $W.CreateShortcut($lnk)
+        $sc.TargetPath = $dst
+        $sc.WorkingDirectory = $dir
+        $sc.IconLocation = "$dst,0"
+        $sc.Description = 'Charles 5.2.2 简体中文版'
+        $sc.Save()
+        Log '已部署启动器并创建桌面快捷方式「Charles 中文版」' 'OK'
+    } catch {
+        Log ("创建快捷方式失败：{0}" -f $_.Exception.Message) 'WARN'
+    }
 }
 
 function New-PortableCopy([string]$srcDir, [string]$jarPath) {
